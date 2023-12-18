@@ -7,6 +7,7 @@ use App\Http\Requests\Auth\RegistrationRequest;
 use App\Models\User;
 use Error;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Client\Request;
 
 class AuthController extends Controller
 {
@@ -32,7 +33,8 @@ class AuthController extends Controller
         try {
             if(auth()->attempt($validated, true)) {
                 $user = User::where('email', $validated['email'])->first();
-                return response()->json($user, 200);
+                $token = $user->createToken('authToken')->plainTextToken;
+                return response()->json(['user' => $user,'token' => $token], 200);
             } else {
                 throw new Error('Invalid credentials!');
             }
@@ -42,10 +44,10 @@ class AuthController extends Controller
         }
     }
 
-    public function logout(): JsonResponse
+    public function logout(Request $request): JsonResponse
     {
         auth()->logout();
-        session()->flush();
+        $request->user()->token()->revoke();
         return response()->json([], 200);
     }
 }
