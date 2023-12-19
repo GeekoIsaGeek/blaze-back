@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\User\UploadPhotoRequest;
+use App\Http\Requests\Photo\UploadPhotoRequest;
 use App\Models\Photo;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Storage;
@@ -14,7 +14,6 @@ class PhotoController extends Controller
     {
         try {
             $validatedImage = $request->validated()['image'];
-
             $photos = $request->user()->photos  ?? [];
 
             if(count($photos) > 5) {
@@ -22,12 +21,12 @@ class PhotoController extends Controller
             }
 
             $imageName = $validatedImage->hashName();
-            $photo = $validatedImage->storeAs('photos', $imageName);
+            $path = $validatedImage->storeAs('photos', $imageName);
 
-            $photo = Photo::create(['user_id' => $request->user()->id, 'url' => $photo]);
+            $photo = Photo::create(['user_id' => $request->user()->id, 'url' => $path]);
             return response()->json(["image" => $photo], 200);
         } catch(Error $e) {
-            return response()->json($e->getMessage(), 400);
+            return response()->json(["error" => $e->getMessage()], 400);
         }
     }
 
