@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\PhotoController;
 use App\Http\Controllers\UserController;
 
 /*
@@ -21,13 +22,14 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::controller(AuthController::class)->group(function () {
-    Route::post('/register', 'register')->name('register_user');
-    Route::post('/login', 'login')->name('login_user');
-    Route::post('/logout', 'logout')->name('logout_user');
+    Route::post('/register', 'register')->name('users.register');
+    Route::post('/login', 'login')->name('users.login');
+    Route::post('/logout', 'logout')->name('users.logout');
 });
 
 Route::middleware(['auth:sanctum'])->group(function () {
-    Route::controller(UserController::class)->group(function () {
-        Route::post('/upload-photo', 'uploadPhoto')->name('upload_photo');
+    Route::controller(PhotoController::class)->group(function () {
+        Route::post('/photos/upload', 'uploadPhoto')->name('photos.upload');
+        Route::delete('/photos/{id}', 'deletePhoto')->name('photos.delete');
     });
 });
