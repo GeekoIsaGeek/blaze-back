@@ -2,4 +2,13 @@
 
 namespace App\Http\Controllers;
 
-class UserController extends Controller {}
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Client\Request;
+
+class UserController extends Controller
+{
+    public function setInterests(Request $request): JsonResponse
+    {
+        return response()->json([], 200);
+    }
+}

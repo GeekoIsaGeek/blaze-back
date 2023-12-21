@@ -21,4 +21,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::post('/photos/upload', 'uploadPhoto')->name('photos.upload');
         Route::delete('/photos/{id}', 'deletePhoto')->name('photos.delete');
     });
+    Route::controller(UserController::class)->group(function () {
+        Route::post('/user/interests', 'setInterests')->name('user.set_interests');
+    });
 });
