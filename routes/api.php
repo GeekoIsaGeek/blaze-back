@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PhotoController;
 use App\Http\Controllers\UserController;
+use App\Models\Interest;
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
@@ -24,4 +25,5 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::controller(UserController::class)->group(function () {
         Route::post('/user/interests', 'setInterests')->name('user.set_interests');
     });
+    Route::get('/interests', fn() => Interest::all())->name('interests');
 });
