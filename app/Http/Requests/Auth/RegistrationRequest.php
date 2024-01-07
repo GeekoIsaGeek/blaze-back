@@ -10,9 +10,11 @@ class RegistrationRequest extends FormRequest
     {
         return [
             'username' => ['required','min:6', 'unique:users,username'],
-            'email' => ['required','email', 'unique:users,email'],
+            'email' => ['required', 'email', 'unique:users,email'],
             'birthdate' => ['required','date'],
             'password' => ['required','min:8']
         ];
     }
+
+
 }
