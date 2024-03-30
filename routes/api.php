@@ -25,5 +25,5 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::controller(UserController::class)->group(function () {
         Route::post('/user/interests', 'setInterests')->name('user.set_interests');
     });
-    Route::get('/interests', fn() => Interest::all())->name('interests');
+    Route::get('/interests', fn () => Interest::all())->name('interests');
 });
