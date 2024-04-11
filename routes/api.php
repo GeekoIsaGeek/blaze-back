@@ -23,7 +23,10 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::delete('/photos/{id}', 'deletePhoto')->name('photos.delete');
     });
     Route::controller(UserController::class)->group(function () {
-        Route::post('/user/interests', 'setInterests')->name('user.set_interests');
+        Route::prefix('/user/interests')->group(function () {
+            Route::post('{interest}/add', 'addInterest')->name('user.add_interest');
+            Route::delete('{interest}/delete', 'deleteInterest')->name('user.delete_interest');
+        });
     });
     Route::get('/interests', fn () => Interest::all())->name('interests');
 });

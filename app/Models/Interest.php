@@ -15,6 +15,5 @@ class Interest extends Model
     public function users(): BelongsToMany
     {
         return $this->belongsToMany(User::class, 'interests_users', 'interest_id', 'user_id');
-
     }
 }
