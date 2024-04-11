@@ -16,6 +16,9 @@ class UserController extends Controller
             if($isAlreadyAttached) {
                 return response()->json(["error" => "$interest->interest is already included in interests"], 400);
             }
+            if($request->user()->interests()->count() >= 5) {
+                return response()->json(["error" => "Only 5 interests can be selected"], 400);
+            }
             $request->user()->interests()->attach($interest);
             return response()->json([], 201);
         } catch(Exception $error) {
