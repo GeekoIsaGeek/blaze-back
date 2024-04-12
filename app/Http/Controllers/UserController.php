@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UpdateGenderRequest;
 use App\Models\Interest;
 use Exception;
 use Illuminate\Http\JsonResponse;
@@ -35,6 +36,48 @@ class UserController extends Controller
             }
 
             $request->user()->interests()->detach($interest);
+            return response()->json([], 204);
+        } catch(Exception $error) {
+            return response()->json($error, 500);
+        }
+    }
+
+    public function updateGender(UpdateGenderRequest $request): JsonResponse
+    {
+        $validated = $request->validated();
+
+        try {
+            $request->user()->update(['gender' => $validated['gender']]);
+            return response()->json([], 204);
+        } catch(Exception $error) {
+            return response()->json($error, 500);
+        }
+    }
+
+    public function addLanguage(Request $request, string $languageCode): JsonResponse
+    {
+        try {
+            $languages = $request->user()->languages ?? [];
+            if(in_array($languageCode, $languages)) {
+                return response()->json(["error" => "Language is already added"], 400);
+            }
+            $request->user()->languages = array_merge($languages ?? [], [$languageCode]);
+            $request->user()->save();
+            return response()->json([], 204);
+        } catch(Exception $error) {
+            return response()->json($error, 500);
+        }
+    }
+
+    public function deleteLanguage(Request $request, string $languageCode): JsonResponse
+    {
+        try {
+            $languages = $request->user()->languages ?? [];
+            if(!in_array($languageCode, $languages)) {
+                return response()->json(["error" => "Language is not added"], 400);
+            }
+            $request->user()->languages = array_diff($languages, [$languageCode]);
+            $request->user()->save();
             return response()->json([], 204);
         } catch(Exception $error) {
             return response()->json($error, 500);

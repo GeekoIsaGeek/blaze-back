@@ -22,11 +22,22 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::post('/photos/upload', 'uploadPhoto')->name('photos.upload');
         Route::delete('/photos/{id}', 'deletePhoto')->name('photos.delete');
     });
+
     Route::controller(UserController::class)->group(function () {
-        Route::prefix('/user/interests')->group(function () {
-            Route::post('{interest}/add', 'addInterest')->name('user.add_interest');
-            Route::delete('{interest}/delete', 'deleteInterest')->name('user.delete_interest');
+        Route::prefix('/user')->group(function () {
+            Route::prefix('/interests')->group(function () {
+                Route::post('{interest}/add', 'addInterest')->name('user.add_interest');
+                Route::delete('{interest}/delete', 'deleteInterest')->name('user.delete_interest');
+            });
+
+            Route::prefix('/languages')->group(function () {
+                Route::put('{language}/add', 'addLanguage')->name('user.add_language');
+                Route::delete('{language}/delete', 'deleteLanguage')->name('user.delete_language');
+            });
+
+            Route::put('/gender', 'updateGender')->name('user.update_gender');
         });
     });
+
     Route::get('/interests', fn () => Interest::all())->name('interests');
 });
