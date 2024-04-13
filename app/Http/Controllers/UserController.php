@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\UpdateGenderRequest;
+use App\Http\Requests\UpdateUser;
 use App\Models\Interest;
 use Exception;
 use Illuminate\Http\JsonResponse;
@@ -10,6 +11,18 @@ use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
+    public function updateUser(UpdateUser $request): JsonResponse
+    {
+        $validated = $request->validated();
+
+        try {
+            $request->user()->update($validated);
+            return response()->json([], 204);
+        } catch(Exception $error) {
+            return response()->json($error, 500);
+        }
+    }
+
     public function addInterest(Request $request, Interest $interest): JsonResponse
     {
         try {

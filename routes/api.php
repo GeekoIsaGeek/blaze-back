@@ -25,6 +25,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::controller(UserController::class)->group(function () {
         Route::prefix('/user')->group(function () {
+            Route::put('/', 'updateUser')->name('user.update');
+            Route::put('/gender', 'updateGender')->name('user.update_gender');
+
             Route::prefix('/interests')->group(function () {
                 Route::post('{interest}/add', 'addInterest')->name('user.add_interest');
                 Route::delete('{interest}/delete', 'deleteInterest')->name('user.delete_interest');
@@ -35,7 +38,6 @@ Route::middleware(['auth:sanctum'])->group(function () {
                 Route::delete('{language}/delete', 'deleteLanguage')->name('user.delete_language');
             });
 
-            Route::put('/gender', 'updateGender')->name('user.update_gender');
         });
     });
 
