@@ -12,9 +12,9 @@ return new class () extends Migration {
     {
         Schema::create('preferences', function (Blueprint $table) {
             $table->id();
-            $table->string('gender');
-            $table->string('age_from');
-            $table->string('age_to');
+            $table->string('show')->nullable();
+            $table->string('age_from')->nullable();
+            $table->string('age_to')->nullable();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
         });

@@ -9,7 +9,7 @@ use App\Http\Resources\InterestResource;
 use App\Models\Interest;
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+    return $request->user()->load('preference');
 });
 
 Route::controller(AuthController::class)->group(function () {
@@ -28,6 +28,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::prefix('/user')->group(function () {
             Route::put('/', 'updateUser')->name('user.update');
             Route::put('/gender', 'updateGender')->name('user.update_gender');
+            Route::put('/preferences', 'updatePreferences')->name('user.update_preferences');
 
             Route::prefix('/interests')->group(function () {
                 Route::post('{interest}/add', 'addInterest')->name('user.add_interest');
