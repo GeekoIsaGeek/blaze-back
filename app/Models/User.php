@@ -21,11 +21,6 @@ class User extends Authenticatable
         'id'
     ];
 
-    protected $with = [
-        'photos',
-        'interests'
-    ];
-
     public function photos(): HasMany
     {
         return $this->hasMany(Photo::class);

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Auth\RegistrationRequest;
+use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Laravel\Sanctum\PersonalAccessToken;
@@ -34,7 +35,7 @@ class AuthController extends Controller
             if(auth()->attempt($validated, true)) {
                 $user = User::where('email', $validated['email'])->first();
                 $token = $user->createToken('authToken')->plainTextToken;
-                return response()->json(['user' => $user,'token' => $token], 200);
+                return response()->json(['user' => UserResource::make($user),'token' => $token], 200);
             } else {
                 throw new Error('Invalid credentials!');
             }
