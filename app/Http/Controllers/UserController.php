@@ -111,4 +111,14 @@ class UserController extends Controller
             return response()->json($error, 500);
         }
     }
+
+    public function deleteUser(Request $request): JsonResponse
+    {
+        try {
+            $request->user()->delete();
+            return response()->json([], 204);
+        } catch(Exception $error) {
+            return response()->json($error, 500);
+        }
+    }
 }
