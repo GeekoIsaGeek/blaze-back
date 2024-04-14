@@ -48,8 +48,6 @@ class AuthController extends Controller
     public function logout(): JsonResponse
     {
         PersonalAccessToken::where('tokenable_id', auth()->user()->id)->delete();
-        auth()->logout();
-
         return response()->json([], 200);
     }
 }

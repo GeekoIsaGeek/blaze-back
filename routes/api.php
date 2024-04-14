@@ -15,7 +15,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::controller(AuthController::class)->group(function () {
     Route::post('/register', 'register')->name('users.register');
     Route::post('/login', 'login')->name('users.login');
-    Route::post('/logout', 'logout')->name('users.logout')->middleware('auth:sanctum');
+    Route::post('/logout', 'logout')->name('users.logout')->middleware(['auth:sanctum']);
 });
 
 Route::middleware(['auth:sanctum'])->group(function () {
@@ -23,6 +23,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::post('/photos/upload', 'uploadPhoto')->name('photos.upload');
         Route::delete('/photos/{id}', 'deletePhoto')->name('photos.delete');
     });
+
 
     Route::controller(UserController::class)->group(function () {
         Route::prefix('/user')->group(function () {
