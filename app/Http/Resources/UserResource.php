@@ -23,7 +23,7 @@ class UserResource extends JsonResource
             'bio' => $this->bio,
             'gender' => $this->gender,
             'languages' => $this->languages,
-            'preferences' => $this->preferences,
+            'preference' => $this->preference,
             'interests' => $this->interests,
             'photos' => $this->photos,
         ];
