@@ -6,7 +6,7 @@ use App\Http\Resources\MeetingUserResource;
 use App\Models\User;
 use Illuminate\Http\Request;
 
-class GetUsers extends Controller
+class GetUsersController extends Controller
 {
     public function __invoke()
     {

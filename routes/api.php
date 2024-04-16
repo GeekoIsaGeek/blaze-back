@@ -3,7 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\GetUsers;
+use App\Http\Controllers\GetUsersController;
 use App\Http\Controllers\PhotoController;
 use App\Http\Controllers\UserController;
 use App\Http\Resources\InterestResource;
@@ -24,8 +24,6 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::post('/photos/upload', 'uploadPhoto')->name('photos.upload');
         Route::delete('/photos/{id}', 'deletePhoto')->name('photos.delete');
     });
-
-    Route::get('/users', GetUsers::class)->name('users.get');
 
     Route::controller(UserController::class)->group(function () {
         Route::prefix('/user')->group(function () {
@@ -48,4 +46,5 @@ Route::middleware(['auth:sanctum'])->group(function () {
     });
 
     Route::get('/interests', fn () => InterestResource::collection(Interest::all()))->name('interests');
+    Route::get('/users', GetUsersController::class)->name('users.get');
 });
