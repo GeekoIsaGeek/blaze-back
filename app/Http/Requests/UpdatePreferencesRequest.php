@@ -9,7 +9,7 @@ class UpdatePreferencesRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'show' => 'string|in:men,women,everyone',
+            'show' => 'string|in:male,female,everyone',
             'age_from' => 'integer|min:18',
             'age_to' => 'integer|min:19',
         ];

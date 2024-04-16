@@ -3,6 +3,9 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use App\Helpers\Dates;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -46,5 +49,19 @@ class User extends Authenticatable
     public function preference(): HasOne
     {
         return $this->hasOne(Preference::class);
+    }
+
+    public function scopeSatisfyGenderPreference($query, string $gender): Builder
+    {
+        if(!$gender || $gender === 'everyone') {
+            return $query;
+        }
+
+        return $query->where('gender', $gender);
+    }
+
+    public function scopeSatisfyAgePreference($query, $ageFrom, $ageTo): Builder
+    {
+        return $query->whereRaw('TIMESTAMPDIFF(YEAR, birthdate, CURDATE()) BETWEEN ? AND ?', [$ageFrom ?? 18, $ageTo ?? 90]);
     }
 }

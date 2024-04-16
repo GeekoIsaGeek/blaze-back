@@ -15,7 +15,7 @@ return new class () extends Migration {
             $table->string('show')->nullable();
             $table->string('age_from')->nullable();
             $table->string('age_to')->nullable();
-            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('user_id')->unique()->constrained()->cascadeOnDelete();
             $table->timestamps();
         });
     }

@@ -22,6 +22,7 @@ class MeetingUserResource extends JsonResource
             'age' => $this->whenNotNull($this->birthdate, Dates::ageFromBirthdate($this->birthdate)),
             'bio' => $this->bio,
             'languages' => $this->languages,
+            'gender' => $this->gender,
             'interests' => InterestResource::collection($this->interests),
             'photos' =>  PhotoResource::collection($this->photos),
         ];
