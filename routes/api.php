@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\GetUsers;
 use App\Http\Controllers\PhotoController;
 use App\Http\Controllers\UserController;
 use App\Http\Resources\InterestResource;
@@ -24,6 +25,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::delete('/photos/{id}', 'deletePhoto')->name('photos.delete');
     });
 
+    Route::get('/users', GetUsers::class)->name('users.get');
 
     Route::controller(UserController::class)->group(function () {
         Route::prefix('/user')->group(function () {

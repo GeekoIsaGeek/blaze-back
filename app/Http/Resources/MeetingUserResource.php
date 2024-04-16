@@ -2,11 +2,11 @@
 
 namespace App\Http\Resources;
 
-use App\Helpers\Dates;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use App\Helpers\Dates;
 
-class UserResource extends JsonResource
+class MeetingUserResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -18,15 +18,12 @@ class UserResource extends JsonResource
         return [
             'id' => $this->id,
             'username' => $this->username,
-            'email' => $this->email,
-            'age' => $this->whenNotNull($this->birthdate, Dates::ageFromBirthdate($this->birthdate)),
             'location' => $this->location,
             'bio' => $this->bio,
-            'gender' => $this->gender,
             'languages' => $this->languages,
-            'preference' => $this->preference,
             'interests' => InterestResource::collection($this->interests),
             'photos' =>  PhotoResource::collection($this->photos),
         ];
+
     }
 }
