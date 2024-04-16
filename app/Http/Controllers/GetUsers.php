@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Enums\Gender;
 use App\Http\Resources\MeetingUserResource;
 use App\Models\User;
 use Illuminate\Http\Request;
