@@ -4,8 +4,8 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
-use App\Helpers\Dates;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -51,6 +51,26 @@ class User extends Authenticatable
         return $this->hasOne(Preference::class);
     }
 
+    public function interactionsAsInteractor(): HasMany
+    {
+        return $this->hasMany(Interaction::class, 'interactor_id');
+    }
+
+    public function getLikesAttribute(): Collection
+    {
+        return $this->interactionsAsInteractor()->where('type', 'like')->get();
+    }
+
+    public function getDislikesAttribute(): Collection
+    {
+        return $this->interactionsAsInteractor()->where('type', 'dislike')->get();
+    }
+
+    public function getMatchesAttribute(): Collection
+    {
+        return $this->interactionsAsInteractor()->where('type', 'match')->get();
+    }
+
     public function scopeSatisfyGenderPreference($query, string $gender): Builder
     {
         if(!$gender || $gender === 'everyone') {
@@ -64,4 +84,5 @@ class User extends Authenticatable
     {
         return $query->whereRaw('TIMESTAMPDIFF(YEAR, birthdate, CURDATE()) BETWEEN ? AND ?', [$ageFrom ?? 18, $ageTo ?? 90]);
     }
+
 }

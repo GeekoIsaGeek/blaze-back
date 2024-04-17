@@ -15,6 +15,7 @@ class GetUsersController extends Controller
         $users = User::whereNot('id', auth()->user()->id)
             ->satisfyGenderPreference($preferences->show)
             ->satisfyAgePreference($preferences?->age_from, $preferences?->age_to)
+            ->whereHas('photos')
             ->get();
 
         return response()->json(MeetingUserResource::collection($users), 200);
