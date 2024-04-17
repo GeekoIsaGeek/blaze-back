@@ -10,7 +10,7 @@ use App\Http\Resources\InterestResource;
 use App\Models\Interest;
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user()->load('preference', 'photos', 'interests');
+    return $request->user()->load('preference', 'photos', 'interests')->append('age');
 });
 
 Route::controller(AuthController::class)->group(function () {

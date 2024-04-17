@@ -19,7 +19,7 @@ class MeetingUserResource extends JsonResource
             'id' => $this->id,
             'username' => $this->username,
             'location' => $this->location,
-            'age' => $this->whenNotNull($this->birthdate, Dates::ageFromBirthdate($this->birthdate)),
+            'age' => $this?->age,
             'bio' => $this->bio,
             'languages' => $this->languages,
             'gender' => $this->gender,

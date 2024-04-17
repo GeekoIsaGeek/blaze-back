@@ -6,11 +6,10 @@ use Carbon\Carbon;
 
 class Dates
 {
-    public static function ageFromBirthdate($birthdate)
+    public static function getAgeFromBirthdate($birthdate)
     {
-        $birthdate = Carbon::createFromFormat('Y-m-d', $birthdate);
+        $birthdate = Carbon::parse($birthdate);
         $now = Carbon::now();
-
-        return $now->diffInYears($birthdate);
+        return $birthdate->diffInYears($now);
     }
 }

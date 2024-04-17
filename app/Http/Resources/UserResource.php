@@ -19,7 +19,7 @@ class UserResource extends JsonResource
             'id' => $this->id,
             'username' => $this->username,
             'email' => $this->email,
-            'age' => $this->whenNotNull($this->birthdate, Dates::ageFromBirthdate($this->birthdate)),
+            'age' => $this?->age,
             'location' => $this->location,
             'bio' => $this->bio,
             'gender' => $this->gender,

@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
+use App\Helpers\Dates;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -54,6 +55,11 @@ class User extends Authenticatable
     public function interactionsAsInteractor(): HasMany
     {
         return $this->hasMany(Interaction::class, 'interactor_id');
+    }
+
+    public function getAgeAttribute(): int
+    {
+        return Dates::getAgeFromBirthdate($this->birthdate);
     }
 
     public function getLikesAttribute(): Collection
