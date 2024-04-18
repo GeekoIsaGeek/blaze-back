@@ -9,11 +9,14 @@ class UserSeeder extends Seeder
 {
     public function run(): void
     {
-        User::factory()->create([
-            'username' => 'Test User',
-            'email' => 'test@test.test',
-            'password' => 'password',
-        ]);
+        if(!User::where('email', 'test@test.test')->exists()) {
+            User::factory()->create([
+                'username' => 'Test User',
+                'email' => 'test@test.test',
+                'password' => 'password',
+            ]);
+        }
 
+        User::factory(3)->create();
     }
 }

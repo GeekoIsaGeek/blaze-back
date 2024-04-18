@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Photo;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -33,8 +34,15 @@ class UserFactory extends Factory
             'gender' => fake()->randomElement(['male', 'female','other']),
             'languages' => [fake()->randomElement(['en', 'fr', 'de'])],
             'location' => fake()->city(),
-            'bio' => fake()->paragraph(),
+            'bio' => fake()->paragraph(1),
         ];
+    }
+
+    public function configure()
+    {
+        return $this->afterCreating(function ($user) {
+            Photo::factory(3)->create(['user_id' => $user->id]);
+        });
     }
 
     /**

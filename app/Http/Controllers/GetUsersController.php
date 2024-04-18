@@ -16,6 +16,7 @@ class GetUsersController extends Controller
             ->satisfyGenderPreference($preferences->show)
             ->satisfyAgePreference($preferences?->age_from, $preferences?->age_to)
             ->whereHas('photos')
+            ->limit(10)
             ->get();
 
         return response()->json(MeetingUserResource::collection($users), 200);
