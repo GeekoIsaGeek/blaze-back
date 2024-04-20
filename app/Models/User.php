@@ -110,4 +110,12 @@ class User extends Authenticatable
                 ->where('interactee_id', auth()->user()->id);
         });
     }
+
+    public function scopeExcludeMatches($query): Builder
+    {
+        return $query->whereDoesntHave('interactionsAsInteractor', function ($query) {
+            $query->where('type', InteractionType::MATCH)
+                ->where('interactee_id', auth()->user()->id);
+        });
+    }
 }

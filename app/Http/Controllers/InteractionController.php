@@ -27,8 +27,8 @@ class InteractionController extends Controller
                 "interactee_id" => $user->id
             ]);
 
-            $users = $preferredUserRetrievalService->getUsers(10);
-            return response()->json(MeetingUserResource::collection($users), 200);
+            $users = $preferredUserRetrievalService->getUsers();
+            return response()->json(MeetingUserResource::collection($users)[0], 200);
         } catch(Error $error) {
             return response()->json($error, 400);
         }

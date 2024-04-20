@@ -17,6 +17,7 @@ class PreferredUserRetrievalService
             ->satisfyAgePreference($preferences?->age_from, $preferences?->age_to)
             ->excludeAlreadySwipedUsers()
             ->excludeDislikers()
+            ->excludeMatches()
             ->limit($limit)
             ->get();
 
