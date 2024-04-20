@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
+use App\Enums\InteractionType;
 use App\Helpers\Dates;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -96,7 +97,10 @@ class User extends Authenticatable
     {
         $dislikes = collect(auth()->user()->dislikes)->pluck('interactee_id')->toArray();
 
-        return $query->whereNotIn('id', $dislikes);
+        return $query->whereNotIn('id', $dislikes)
+                    ->whereDoesntHave('interactionsAsInteractor', function ($query) {
+                        $query->where('type', InteractionType::DISLIKE)
+                            ->where('interactee_id', auth()->user()->id);
+                    });
     }
-
 }

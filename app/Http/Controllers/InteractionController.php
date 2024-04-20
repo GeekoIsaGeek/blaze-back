@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\InteractionType;
 use App\Http\Resources\MeetingUserResource;
 use App\Http\Resources\UserResource;
 use App\Models\Interaction;
@@ -21,7 +22,7 @@ class InteractionController extends Controller
                 throw new Exception("Invalid Request! You deserve to love yourself buddy <3");
             }
             Interaction::updateOrCreate([
-                "type" => "dislike",
+                "type" => InteractionType::DISLIKE,
                 "interactor_id" => auth()->user()->id,
                 "interactee_id" => $user->id
             ]);
