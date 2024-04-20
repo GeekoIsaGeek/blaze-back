@@ -97,10 +97,14 @@ class User extends Authenticatable
     {
         $dislikes = collect(auth()->user()->dislikes)->pluck('interactee_id')->toArray();
 
-        return $query->whereNotIn('id', $dislikes)
-                    ->whereDoesntHave('interactionsAsInteractor', function ($query) {
-                        $query->where('type', InteractionType::DISLIKE)
-                            ->where('interactee_id', auth()->user()->id);
-                    });
+        return $query->whereNotIn('id', $dislikes);
+    }
+
+    public function scopeExcludeDislikers($query): Builder
+    {
+        return $query->whereDoesntHave('interactionsAsInteractor', function ($query) {
+            $query->where('type', InteractionType::DISLIKE)
+                ->where('interactee_id', auth()->user()->id);
+        });
     }
 }

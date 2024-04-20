@@ -12,10 +12,11 @@ class PreferredUserRetrievalService
         $preferences = auth()->user()->preference;
 
         $users = User::whereNot('id', auth()->user()->id)
+            ->whereHas('photos')
             ->satisfyGenderPreference($preferences->show)
             ->satisfyAgePreference($preferences?->age_from, $preferences?->age_to)
             ->excludeDislikedUsers()
-            ->whereHas('photos')
+            ->excludeDislikers()
             ->limit($limit)
             ->get();
 
