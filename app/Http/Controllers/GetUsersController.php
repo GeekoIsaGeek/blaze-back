@@ -3,21 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\MeetingUserResource;
-use App\Models\User;
-use Illuminate\Http\Request;
+use App\Services\PreferredUserRetrievalService;
+use Illuminate\Http\JsonResponse;
 
 class GetUsersController extends Controller
 {
-    public function __invoke()
+    public function __invoke(PreferredUserRetrievalService $preferredUserRetrievalService): JsonResponse
     {
-        $preferences = auth()->user()->preference;
 
-        $users = User::whereNot('id', auth()->user()->id)
-            ->satisfyGenderPreference($preferences->show)
-            ->satisfyAgePreference($preferences?->age_from, $preferences?->age_to)
-            ->whereHas('photos')
-            ->limit(10)
-            ->get();
+        $users = $preferredUserRetrievalService->getUsers(2);
 
         return response()->json(MeetingUserResource::collection($users), 200);
     }

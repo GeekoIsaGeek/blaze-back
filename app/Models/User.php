@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Ramsey\Uuid\Builder\BuilderCollection;
 
 class User extends Authenticatable
 {
@@ -89,6 +90,13 @@ class User extends Authenticatable
     public function scopeSatisfyAgePreference($query, $ageFrom, $ageTo): Builder
     {
         return $query->whereRaw('TIMESTAMPDIFF(YEAR, birthdate, CURDATE()) BETWEEN ? AND ?', [$ageFrom ?? 18, $ageTo ?? 90]);
+    }
+
+    public function scopeExcludeDislikedUsers($query): Builder
+    {
+        $dislikes = collect(auth()->user()->dislikes)->pluck('interactee_id')->toArray();
+
+        return $query->whereNotIn('id', $dislikes);
     }
 
 }

@@ -4,9 +4,11 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\GetUsersController;
+use App\Http\Controllers\InteractionController;
 use App\Http\Controllers\PhotoController;
 use App\Http\Controllers\UserController;
 use App\Http\Resources\InterestResource;
+use App\Models\Interaction;
 use App\Models\Interest;
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
@@ -23,6 +25,10 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::controller(PhotoController::class)->group(function () {
         Route::post('/photos/upload', 'uploadPhoto')->name('photos.upload');
         Route::delete('/photos/{id}', 'deletePhoto')->name('photos.delete');
+    });
+
+    Route::controller(InteractionController::class)->group(function () {
+        Route::post('/user/dislikes/add/{user}', 'addToDislikes')->name('dislike');
     });
 
     Route::controller(UserController::class)->group(function () {
