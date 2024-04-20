@@ -59,6 +59,11 @@ class User extends Authenticatable
         return $this->hasMany(Interaction::class, 'interactor_id');
     }
 
+    public function interactionsAsInteractee(): HasMany
+    {
+        return $this->hasMany(Interaction::class, 'interactee_id');
+    }
+
     public function getAgeAttribute(): int
     {
         return Dates::getAgeFromBirthdate($this->birthdate);
@@ -93,11 +98,9 @@ class User extends Authenticatable
         return $query->whereRaw('TIMESTAMPDIFF(YEAR, birthdate, CURDATE()) BETWEEN ? AND ?', [$ageFrom ?? 18, $ageTo ?? 90]);
     }
 
-    public function scopeExcludeDislikedUsers($query): Builder
+    public function scopeExcludeAlreadySwipedUsers($query): Builder
     {
-        $dislikes = collect(auth()->user()->dislikes)->pluck('interactee_id')->toArray();
-
-        return $query->whereNotIn('id', $dislikes);
+        return $query->whereDoesntHave('interactionsAsInteractee', fn ($query) => $query->where('interactor_id', auth()->user()->id));
     }
 
     public function scopeExcludeDislikers($query): Builder

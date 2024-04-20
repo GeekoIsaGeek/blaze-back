@@ -15,7 +15,7 @@ class PreferredUserRetrievalService
             ->whereHas('photos')
             ->satisfyGenderPreference($preferences->show)
             ->satisfyAgePreference($preferences?->age_from, $preferences?->age_to)
-            ->excludeDislikedUsers()
+            ->excludeAlreadySwipedUsers()
             ->excludeDislikers()
             ->limit($limit)
             ->get();
