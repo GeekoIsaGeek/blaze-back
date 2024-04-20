@@ -11,7 +11,7 @@ class GetUsersController extends Controller
     public function __invoke(PreferredUserRetrievalService $preferredUserRetrievalService): JsonResponse
     {
 
-        $users = $preferredUserRetrievalService->getUsers(2);
+        $users = $preferredUserRetrievalService->getUsers();
 
         return response()->json(MeetingUserResource::collection($users), 200);
     }

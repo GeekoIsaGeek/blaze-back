@@ -15,7 +15,6 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
-use Ramsey\Uuid\Builder\BuilderCollection;
 
 class User extends Authenticatable
 {
@@ -25,6 +24,17 @@ class User extends Authenticatable
 
     protected $guarded = [
         'id'
+    ];
+
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+        'password' => 'hashed',
+        'languages' => 'array',
+    ];
+
+    protected $hidden = [
+        'password',
+        'remember_token',
     ];
 
     public function photos(): HasMany
@@ -38,16 +48,6 @@ class User extends Authenticatable
         return $this->belongsToMany(Interest::class, 'interests_users', 'user_id', 'interest_id');
     }
 
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-        'password' => 'hashed',
-        'languages' => 'array',
-    ];
-
-    protected $hidden = [
-        'password',
-        'remember_token',
-    ];
 
     public function preference(): HasOne
     {
@@ -84,16 +84,16 @@ class User extends Authenticatable
         return $this->interactionsAsInteractor()->where('type', 'match')->get();
     }
 
-    public function scopeSatisfyGenderPreference($query, string $gender): Builder
+    public function scopeFilterByGenderPreference($query, string | null $gender = 'everyone'): Builder
     {
-        if(!$gender || $gender === 'everyone') {
+        if(!$gender) {
             return $query;
         }
 
         return $query->where('gender', $gender);
     }
 
-    public function scopeSatisfyAgePreference($query, $ageFrom, $ageTo): Builder
+    public function scopeFilterByAgePreference($query, $ageFrom, $ageTo): Builder
     {
         return $query->whereRaw('TIMESTAMPDIFF(YEAR, birthdate, CURDATE()) BETWEEN ? AND ?', [$ageFrom ?? 18, $ageTo ?? 90]);
     }

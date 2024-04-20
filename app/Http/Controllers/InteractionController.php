@@ -28,7 +28,7 @@ class InteractionController extends Controller
             ]);
 
             $users = $preferredUserRetrievalService->getUsers();
-            return response()->json(MeetingUserResource::collection($users)[0], 200);
+            return response()->json(MeetingUserResource::collection($users), 200);
         } catch(Error $error) {
             return response()->json($error, 400);
         }
