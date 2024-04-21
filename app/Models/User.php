@@ -84,9 +84,9 @@ class User extends Authenticatable
         return $this->interactionsAsInteractor()->where('type', 'match')->get();
     }
 
-    public function scopeFilterByGenderPreference($query, string | null $gender = 'everyone'): Builder
+    public function scopeFilterByGenderPreference($query, string | null $gender): Builder
     {
-        if(!$gender) {
+        if (!$gender || $gender === 'everyone') {
             return $query;
         }
 

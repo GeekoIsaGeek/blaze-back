@@ -10,6 +10,7 @@ class PreferredUserRetrievalService
     public function getUsers(int $limit = 2): Collection | null
     {
         $preferences = auth()->user()->preference;
+
         $users = User::whereNot('id', auth()->user()->id)
             ->whereHas('photos')
             ->filterByGenderPreference($preferences?->show)
