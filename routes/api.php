@@ -8,7 +8,6 @@ use App\Http\Controllers\InteractionController;
 use App\Http\Controllers\PhotoController;
 use App\Http\Controllers\UserController;
 use App\Http\Resources\InterestResource;
-use App\Models\Interaction;
 use App\Models\Interest;
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
@@ -29,6 +28,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::controller(InteractionController::class)->group(function () {
         Route::post('/user/dislikes/add/{user}', 'addToDislikes')->name('dislike');
+        Route::post('/user/likes/add/{user}', 'addToLikes')->name('like');
     });
 
     Route::controller(UserController::class)->group(function () {
