@@ -17,7 +17,7 @@ class MatchedUserResource extends JsonResource
         return [
             'id' => $this->id,
             'username' => $this->username,
-            'photo' => $this->whenLoaded('photos', $this->photos),
+            'photo' => $this->whenLoaded('photos', $this->photos[0]->only(['url'])),
         ];
     }
 }

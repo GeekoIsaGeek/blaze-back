@@ -42,11 +42,11 @@ class InteractionController extends Controller
             if($user->id === auth()->user()->id) {
                 throw new BadRequestException();
             }
-            Interaction::updateOrCreate([
-                "type" => InteractionType::LIKE,
-                "interactor_id" => auth()->user()->id,
-                "interactee_id" => $user->id
-            ]);
+            // Interaction::updateOrCreate([
+            //     "type" => InteractionType::LIKE,
+            //     "interactor_id" => auth()->user()->id,
+            //     "interactee_id" => $user->id
+            // ]);
 
             $matched = in_array(auth()->user()->id, collect($user->likes)->pluck('interactee_id')->toArray());
 
