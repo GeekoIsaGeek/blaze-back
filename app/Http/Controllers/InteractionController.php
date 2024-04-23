@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Enums\InteractionType;
+use App\Events\Matched;
+use App\Http\Resources\MatchedUserResource;
 use App\Http\Resources\MeetingUserResource;
 use App\Http\Resources\UserResource;
 use App\Models\Interaction;
@@ -46,6 +48,12 @@ class InteractionController extends Controller
                 "interactor_id" => auth()->user()->id,
                 "interactee_id" => $user->id
             ]);
+
+            $matched = in_array(auth()->user()->id, collect($user->likes)->pluck('interactee_id')->toArray());
+
+            if($matched) {
+                Matched::dispatch(MatchedUserResource::make($user));
+            }
 
             $users = $preferredUserRetrievalService->getUsers();
             return response()->json(MeetingUserResource::collection($users), 200);
