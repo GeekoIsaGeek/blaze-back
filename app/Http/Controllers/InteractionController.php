@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Enums\InteractionType;
-use App\Events\Matched;
+use App\Events\MatchedEvent;
 use App\Http\Resources\MatchedUserResource;
 use App\Http\Resources\MeetingUserResource;
 use App\Http\Resources\UserResource;
@@ -11,7 +11,6 @@ use App\Models\Interaction;
 use App\Models\User;
 use App\Services\PreferredUserRetrievalService;
 use Error;
-use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
@@ -52,7 +51,8 @@ class InteractionController extends Controller
             $matched = in_array(auth()->user()->id, collect($user->likes)->pluck('interactee_id')->toArray());
 
             if($matched) {
-                Matched::dispatch(MatchedUserResource::make($user));
+                MatchedEvent::dispatch(MatchedUserResource::make(auth()->user()), $user->id);
+                MatchedEvent::dispatch(MatchedUserResource::make($user), auth()->user()->id);
             }
 
             $users = $preferredUserRetrievalService->getUsers();

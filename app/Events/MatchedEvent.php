@@ -11,23 +11,30 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class Matched implements ShouldBroadcast
+class MatchedEvent implements ShouldBroadcast
 {
     use Dispatchable;
     use InteractsWithSockets;
     use SerializesModels;
 
-    public $user;
+    public $likerDetails;
+    public $receiverId;
 
-    public function __construct(mixed $user)
+    public function __construct($likerDetails, $receiverId)
     {
-        $this->user = $user;
+        $this->likerDetails = $likerDetails;
+        $this->receiverId = $receiverId;
+    }
+
+    public function broadcastAs(): string
+    {
+        return 'matched';
     }
 
     public function broadcastOn(): array
     {
         return [
-            new PrivateChannel('match'.$this->user->id)
+            new PrivateChannel("match.$this->receiverId")
         ];
     }
 }
