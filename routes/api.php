@@ -27,8 +27,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
     });
 
     Route::controller(InteractionController::class)->group(function () {
-        Route::post('/user/dislikes/add/{user}', 'addToDislikes')->name('dislike');
-        Route::post('/user/likes/add/{user}', 'addToLikes')->name('like');
+        Route::post('/user/dislikes/add/{user}', 'dislikeUser')->name('dislike');
+        Route::post('/user/likes/add/{user}', 'likeUser')->name('like');
     });
 
     Route::controller(UserController::class)->group(function () {
