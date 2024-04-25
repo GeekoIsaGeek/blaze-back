@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Collection as SupportCollection;
 use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
@@ -79,9 +80,11 @@ class User extends Authenticatable
         return $this->interactionsAsInteractor()->where('type', 'dislike')->get();
     }
 
-    public function getMatchesAttribute(): Collection
+    public function getMatchesAttribute(): SupportCollection
     {
-        return $this->interactionsAsInteractor()->where('type', 'match')->get();
+        return Interaction::where('type',InteractionType::MATCH)
+            ->where('interactee_id', auth()->user()->id)
+            ->orWhere('interactor_id', auth()->user()->id)
     }
 
     public function scopeFilterByGenderPreference($query, string | null $gender): Builder

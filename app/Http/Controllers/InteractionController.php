@@ -47,18 +47,18 @@ class InteractionController extends Controller
             $matched = in_array(auth()->user()->id, collect($user->likes)->pluck('interactee_id')->toArray());
 
             if($matched) {
-                $user->interactionsAsInteractor()
-                    ->where('interactee_id', auth()->user()->id)
-                    ->update(["type" => InteractionType::MATCH]);
+                // $user->interactionsAsInteractor()
+                //     ->where('interactee_id', auth()->user()->id)
+                //     ->update(["type" => InteractionType::MATCH]);
 
                 MatchedEvent::broadcast(MatchedUserResource::make(auth()->user()), $user->id);
                 MatchedEvent::broadcast(MatchedUserResource::make($user), auth()->user()->id);
             } else {
-                Interaction::updateOrCreate([
-                    "type" => InteractionType::LIKE,
-                    "interactor_id" => auth()->user()->id,
-                    "interactee_id" => $user->id
-                ]);
+                // Interaction::updateOrCreate([
+                //     "type" => InteractionType::LIKE,
+                //     "interactor_id" => auth()->user()->id,
+                //     "interactee_id" => $user->id
+                // ]);
             }
 
             $users = $preferredUserRetrievalService->getUsers();
