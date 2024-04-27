@@ -20,7 +20,7 @@ class PreferenceFactory extends Factory
         $minAge = fake()->numberBetween(18, 88);
 
         return [
-            'gender' => fake()->randomElement(['male', 'female','everyone']),
+            'show' => fake()->randomElement(['male', 'female','everyone']),
             'age_from' => $minAge,
             'age_to' => fake()->numberBetween($minAge + 1, 90),
             'user_id' => User::factory()
