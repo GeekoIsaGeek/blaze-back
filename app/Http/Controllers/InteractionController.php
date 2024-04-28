@@ -50,6 +50,7 @@ class InteractionController extends Controller
                 // $user->interactionsAsInteractor()
                 //     ->where('interactee_id', auth()->user()->id)
                 //     ->update(["type" => InteractionType::MATCH]);
+                // info('matched');
 
                 MatchedEvent::broadcast(MatchedUserResource::make(auth()->user()), $user->id);
                 MatchedEvent::broadcast(MatchedUserResource::make($user), auth()->user()->id);

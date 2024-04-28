@@ -82,9 +82,7 @@ class User extends Authenticatable
 
     public function getMatchesAttribute(): SupportCollection
     {
-        return Interaction::where('type', InteractionType::MATCH)
-            ->where('interactee_id', auth()->user()->id)
-            ->orWhere('interactor_id', auth()->user()->id);
+        return $this->interactionsAsInteractee()->where('type', 'match')->get();
     }
 
     public function scopeFilterByGenderPreference($query, string | null $gender): Builder
