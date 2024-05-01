@@ -80,18 +80,6 @@ class User extends Authenticatable
         return $this->interactionsAsInteractor()->where('type', 'dislike')->get();
     }
 
-    // public function getMatchesAttribute(): SupportCollection
-    // {
-    //     $matchedAsInteractee = $this->interactionsAsInteractee()->where('type', 'match')
-    //         ->with('interactor')->get()->pluck('interactor');
-
-    //     $matchedAsInteractor = $this->interactionsAsInteractor()->where('type', 'match')
-    //         ->with('interactee')->get()->pluck('interactee');
-
-    //     return $matchedAsInteractee->merge($matchedAsInteractor);
-    // }
-
-
     public function matchesAsMatcher(): HasMany
     {
         return $this->hasMany(Pair::class, 'matcher_id');

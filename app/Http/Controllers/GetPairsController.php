@@ -17,7 +17,6 @@ class GetPairsController extends Controller
     {
         try {
             $matches = auth()->user()->matches;
-            dd($matches);
             return response()->json(MeetingUserResource::collection($matches), 200);
         } catch(Error $error) {
             return response()->json(['error' => $error->getMessage()], 500);
