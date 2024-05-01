@@ -90,7 +90,7 @@ class User extends Authenticatable
         return $this->hasMany(Pair::class, 'matchee_id');
     }
 
-    public function getMatchesAttribute()
+    public function getMatchesAttribute(): SupportCollection
     {
         $matchesAsMatchee = $this->matchesAsMatchee()->with('matcher')->get()->pluck('matcher');
         $matchesAsMatcher = $this->matchesAsMatcher()->with('matchee')->get()->pluck('matchee');
