@@ -8,6 +8,7 @@ use App\Http\Resources\MatchedUserResource;
 use App\Http\Resources\MeetingUserResource;
 use App\Http\Resources\UserResource;
 use App\Models\Interaction;
+use App\Models\Pair;
 use App\Models\User;
 use App\Services\PreferredUserRetrievalService;
 use Error;
@@ -47,9 +48,9 @@ class InteractionController extends Controller
             $matched = in_array(auth()->user()->id, collect($user->likes)->pluck('interactee_id')->toArray());
 
             if($matched) {
-                $user->interactionsAsInteractor()
-                    ->where('interactee_id', auth()->user()->id)
-                    ->update(["type" => InteractionType::MATCH]);
+                $user->interactionsAsInteractor()->where('interactee_id', auth()->user()->id)->delete();
+
+                Pair::create(['matcher_id' => auth()->user()->id, 'matchee_id' => $user->id]);
 
                 MatchedEvent::broadcast(MatchedUserResource::make(auth()->user()), $user->id);
                 MatchedEvent::broadcast(MatchedUserResource::make($user), auth()->user()->id);

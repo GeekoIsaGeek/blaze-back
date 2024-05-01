@@ -6,5 +6,4 @@ enum InteractionType: string
 {
     case LIKE = 'like';
     case DISLIKE = 'dislike';
-    case MATCH = 'match';
 }

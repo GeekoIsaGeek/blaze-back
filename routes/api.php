@@ -3,7 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\GetUserMatchesController;
+use App\Http\Controllers\GetPairsController;
 use App\Http\Controllers\GetUsersController;
 use App\Http\Controllers\InteractionController;
 use App\Http\Controllers\PhotoController;
@@ -54,5 +54,5 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::get('/interests', fn () => InterestResource::collection(Interest::all()))->name('interests');
     Route::get('/users', GetUsersController::class)->name('users.get');
-    Route::get('/user/matches', GetUserMatchesController::class)->name('user.matches');
+    Route::get('/user/matches', GetPairsController::class)->name('user.matches');
 });

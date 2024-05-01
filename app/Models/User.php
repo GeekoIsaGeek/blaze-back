@@ -80,15 +80,34 @@ class User extends Authenticatable
         return $this->interactionsAsInteractor()->where('type', 'dislike')->get();
     }
 
-    public function getMatchesAttribute(): SupportCollection
+    // public function getMatchesAttribute(): SupportCollection
+    // {
+    //     $matchedAsInteractee = $this->interactionsAsInteractee()->where('type', 'match')
+    //         ->with('interactor')->get()->pluck('interactor');
+
+    //     $matchedAsInteractor = $this->interactionsAsInteractor()->where('type', 'match')
+    //         ->with('interactee')->get()->pluck('interactee');
+
+    //     return $matchedAsInteractee->merge($matchedAsInteractor);
+    // }
+
+
+    public function matchesAsMatcher(): HasMany
     {
-        $matchedAsInteractee = $this->interactionsAsInteractee()->where('type', 'match')
-            ->with('interactor')->get()->pluck('interactor');
+        return $this->hasMany(Pair::class, 'matcher_id');
+    }
 
-        $matchedAsInteractor = $this->interactionsAsInteractor()->where('type', 'match')
-            ->with('interactee')->get()->pluck('interactee');
+    public function matchesAsMatchee(): hasMany
+    {
+        return $this->hasMany(Pair::class, 'matchee_id');
+    }
 
-        return $matchedAsInteractee->merge($matchedAsInteractor);
+    public function getMatchesAttribute()
+    {
+        $matchesAsMatchee = $this->matchesAsMatchee()->with('matcher')->get()->pluck('matcher');
+        $matchesAsMatcher = $this->matchesAsMatcher()->with('matchee')->get()->pluck('matchee');
+
+        return $matchesAsMatchee->merge($matchesAsMatcher);
     }
 
     public function scopeFilterByGenderPreference($query, string | null $gender): Builder
@@ -120,9 +139,7 @@ class User extends Authenticatable
 
     public function scopeExcludeMatches($query): Builder
     {
-        return $query->whereDoesntHave('interactionsAsInteractor', function ($query) {
-            $query->where('type', InteractionType::MATCH)
-                ->where('interactee_id', auth()->user()->id);
-        });
+        return $query->whereDoesntHave('matchesAsMatcher', fn ($q) => $q->where('matchee_id', auth()->user()->id))
+            ->whereDoesntHave('matchesAsMatchee', fn ($q) => $q->where('matcher_id', auth()->user()->id));
     }
 }
