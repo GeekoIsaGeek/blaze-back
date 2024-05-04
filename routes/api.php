@@ -3,8 +3,10 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ChatController;
 use App\Http\Controllers\GetUsersController;
 use App\Http\Controllers\InteractionController;
+use App\Http\Controllers\MessageController;
 use App\Http\Controllers\PairController;
 use App\Http\Controllers\PhotoController;
 use App\Http\Controllers\UserController;
@@ -60,7 +62,13 @@ Route::middleware(['auth:sanctum'])->group(function () {
         });
     });
 
+    Route::controller(MessageController::class)->group(function () {
+        Route::post('/messages', 'store')->name('messages.store');
+    });
+
+
     Route::get('/interests', fn () => InterestResource::collection(Interest::all()))->name('interests');
     Route::get('/users', GetUsersController::class)->name('users.get');
+    Route::get('/chats/previews', [ChatController::class, 'getPreviews'])->name('chats.get_previews');
 
 });

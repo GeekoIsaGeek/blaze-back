@@ -41,7 +41,6 @@ class User extends Authenticatable
     public function photos(): HasMany
     {
         return $this->hasMany(Photo::class);
-
     }
 
     public function interests(): BelongsToMany
@@ -52,6 +51,11 @@ class User extends Authenticatable
     public function preference(): HasOne
     {
         return $this->hasOne(Preference::class);
+    }
+
+    public function chats(): BelongsToMany
+    {
+        return $this->belongsToMany(Chat::class, 'chat_user', 'user_id', 'chat_id');
     }
 
     public function sentMessages(): HasMany
@@ -140,7 +144,7 @@ class User extends Authenticatable
             ->whereDoesntHave('matchesAsMatchee', fn ($q) => $q->where('matcher_id', auth()->user()->id));
     }
 
-    private function getNewMatches($query, $role)
+    private function getNewMatches($query, $role): SupportCollection
     {
         return $query->with($role)
             ->whereDoesntHave("$role.sentMessages", function ($query) {
