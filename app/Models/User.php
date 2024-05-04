@@ -49,10 +49,19 @@ class User extends Authenticatable
         return $this->belongsToMany(Interest::class, 'interests_users', 'user_id', 'interest_id');
     }
 
-
     public function preference(): HasOne
     {
         return $this->hasOne(Preference::class);
+    }
+
+    public function sentMessages(): HasMany
+    {
+        return $this->hasMany(Message::class, 'sender_id');
+    }
+
+    public function receivedMessages(): HasMany
+    {
+        return $this->hasMany(Message::class, 'receiver_id');
     }
 
     public function interactionsAsInteractor(): HasMany
@@ -92,8 +101,8 @@ class User extends Authenticatable
 
     public function getMatchesAttribute(): SupportCollection
     {
-        $matchesAsMatchee = $this->matchesAsMatchee()->with('matcher')->get()->pluck('matcher');
-        $matchesAsMatcher = $this->matchesAsMatcher()->with('matchee')->get()->pluck('matchee');
+        $matchesAsMatchee = $this->getNewMatches($this->matchesAsMatchee(), 'matcher');
+        $matchesAsMatcher = $this->getNewMatches($this->matchesAsMatcher(), 'matchee');
 
         return $matchesAsMatchee->merge($matchesAsMatcher);
     }
@@ -129,5 +138,17 @@ class User extends Authenticatable
     {
         return $query->whereDoesntHave('matchesAsMatcher', fn ($q) => $q->where('matchee_id', auth()->user()->id))
             ->whereDoesntHave('matchesAsMatchee', fn ($q) => $q->where('matcher_id', auth()->user()->id));
+    }
+
+    private function getNewMatches($query, $role)
+    {
+        return $query->with($role)
+            ->whereDoesntHave("$role.sentMessages", function ($query) {
+                $query->where('receiver_id', auth()->user()->id);
+            })
+            ->whereDoesntHave("$role.receivedMessages", function ($query) {
+                $query->where('sender_id', auth()->user()->id);
+            })
+            ->get()->pluck($role);
     }
 }
