@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -21,6 +22,14 @@ class Chat extends Model
     public function messages(): HasMany
     {
         return $this->hasMany(Message::class);
+    }
+
+    public function scopeWhereSecondParticipantIs($query, $participantId): Builder
+    {
+        return $query->whereHas('users', function ($query) use ($participantId) {
+            $query->where('users.id', $participantId)
+                ->orWhere('users.id', auth()->id());
+        }, '=', 2)->with(['messages']);
     }
 
 }

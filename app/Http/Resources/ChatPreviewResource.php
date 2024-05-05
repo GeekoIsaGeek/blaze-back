@@ -17,6 +17,7 @@ class ChatPreviewResource extends JsonResource
         return [
             'photo' => $this->whenLoaded('users', $this->users[0]?->photos[0]?->url),
             'name' => $this->whenLoaded('users', $this->users[0]->username),
+            'user_id' => $this->whenLoaded('users', $this->users[0]->id),
             'message' => $this->whenLoaded('messages', $this->messages[0]?->message)
         ];
     }

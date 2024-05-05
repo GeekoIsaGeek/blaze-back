@@ -62,13 +62,15 @@ Route::middleware(['auth:sanctum'])->group(function () {
         });
     });
 
+    Route::controller(ChatController::class)->group(function () {
+        Route::get('/chats/previews', 'getPreviews')->name('chats.get_previews');
+        Route::get('/chats/{user}', 'show')->name('chats.show');
+    });
+
     Route::controller(MessageController::class)->group(function () {
         Route::post('/messages', 'store')->name('messages.store');
     });
 
-
     Route::get('/interests', fn () => InterestResource::collection(Interest::all()))->name('interests');
     Route::get('/users', GetUsersController::class)->name('users.get');
-    Route::get('/chats/previews', [ChatController::class, 'getPreviews'])->name('chats.get_previews');
-
 });
