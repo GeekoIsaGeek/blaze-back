@@ -26,11 +26,9 @@ class ChatController extends Controller
         }
     }
 
-    public function getChatMessages(User $user): JsonResponse
+    public function getChatMessages(Chat $chat): JsonResponse
     {
         try {
-            $chat = Chat::whereSecondParticipantIs($user->id)->first();
-
             return response()->json(MessageResoure::collection($chat->messages), 200);
         } catch(Error $e) {
             return response()->json(['message' => $e->getMessage()], 500);

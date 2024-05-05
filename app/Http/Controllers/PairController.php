@@ -15,7 +15,7 @@ class PairController extends Controller
     public function index(): JsonResponse
     {
         try {
-            $matches = auth()->user()->matches;
+            $matches = auth()->user()->newMatches;
             return response()->json(MeetingUserResource::collection($matches), 200);
         } catch(Error $error) {
             return response()->json(['error' => $error->getMessage()], 500);

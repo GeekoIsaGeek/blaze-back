@@ -64,7 +64,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::controller(ChatController::class)->group(function () {
         Route::get('/chats/previews', 'getPreviews')->name('chats.get_previews');
-        Route::get('/chats/{user}/messages', 'getChatMessages')->name('chats.get_messages');
+        Route::get('/chats/{chat}/messages', 'getChatMessages')->name('chats.get_messages');
     });
 
     Route::controller(MessageController::class)->group(function () {

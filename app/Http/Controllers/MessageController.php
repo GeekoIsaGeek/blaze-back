@@ -36,7 +36,7 @@ class MessageController extends Controller
 
             MessageProcessedEvent::broadcast($message->message, $message->sender_id, $chat->id);
 
-            return response()->json(['message' => 'Message has been created'], 201);
+            return response()->json(['message' => 'The message has been created'], 201);
         } catch(Error $error) {
             return response()->json(['error' => $error->getMessage()], 500);
         }
