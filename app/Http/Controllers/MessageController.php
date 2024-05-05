@@ -21,9 +21,10 @@ class MessageController extends Controller
                 $query->where('users.id', $senderId)->orWhere('users.id', $receiverId);
             }, '=', 2)->with('users')->first();
 
+
             if(!$chat) {
                 $chat = Chat::create();
-                $chat->users()->attach([$senderId, $receiverId]);
+                $chat->users()->syncWithoutDetaching([$senderId, $receiverId]);
             }
 
             $message = $chat->messages()->create([

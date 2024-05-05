@@ -20,14 +20,13 @@ class ChatController extends Controller
             },'users' => function ($query) {
                 $query->whereNot('users.id', auth()->id());
             }]);
-
             return response()->json(ChatPreviewResource::collection($chats), 200);
         } catch(Error $e) {
             return response()->json(['message' => $e->getMessage()], 500);
         }
     }
 
-    public function show(User $user): JsonResponse
+    public function getChatMessages(User $user): JsonResponse
     {
         try {
             $chat = Chat::whereSecondParticipantIs($user->id)->first();

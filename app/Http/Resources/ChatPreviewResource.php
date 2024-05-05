@@ -14,10 +14,12 @@ class ChatPreviewResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        $user = $this->whenLoaded('users', $this->users[0]);
+
         return [
-            'photo' => $this->whenLoaded('users', $this->users[0]?->photos[0]?->url),
-            'name' => $this->whenLoaded('users', $this->users[0]->username),
-            'user_id' => $this->whenLoaded('users', $this->users[0]->id),
+            'photo' => $user->photos[0]?->url,
+            'name' => $user?->username,
+            'user_id' => $user?->id,
             'message' => $this->whenLoaded('messages', $this->messages[0]?->message)
         ];
     }
