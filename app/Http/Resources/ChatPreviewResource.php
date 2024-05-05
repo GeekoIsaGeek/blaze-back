@@ -20,7 +20,8 @@ class ChatPreviewResource extends JsonResource
             'photo' => $user->photos[0]?->url,
             'name' => $user?->username,
             'user_id' => $user?->id,
-            'message' => $this->whenLoaded('messages', $this->messages[0]?->message)
+            'message' => $this->whenLoaded('messages', $this->messages[0]?->message),
+            'chat_id' => $this->id
         ];
     }
 }
