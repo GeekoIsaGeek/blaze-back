@@ -12,6 +12,7 @@ use App\Http\Controllers\PhotoController;
 use App\Http\Controllers\UserController;
 use App\Http\Resources\InterestResource;
 use App\Models\Interest;
+use App\Models\User;
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user()->load('preference', 'photos', 'interests')->append('age');
@@ -50,8 +51,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
                 Route::put('{language}/add', 'addLanguage')->name('user.add_language');
                 Route::delete('{language}/delete', 'deleteLanguage')->name('user.delete_language');
             });
-
         });
+        Route::get('/users/{user}/pfp', 'getProfilePic')->name('user.get_profile_pic');
     });
 
     Route::controller(PairController::class)->group(function () {
@@ -64,8 +65,10 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::controller(ChatController::class)->group(function () {
         Route::get('/chats/previews', 'getPreviews')->name('chats.get_previews');
+        Route::post('/chats/{user}', 'createOrGetIfExists')->name('chats.create_or_get');
         Route::get('/chats/{chat}/messages', 'getChatMessages')->name('chats.get_messages');
     });
+
 
     Route::controller(MessageController::class)->group(function () {
         Route::post('/messages', 'store')->name('messages.store');

@@ -83,6 +83,11 @@ class User extends Authenticatable
         return Dates::getAgeFromBirthdate($this->birthdate);
     }
 
+    public function getProfilePicAttribute(): string
+    {
+        return $this->photos->first()?->url ?? null;
+    }
+
     public function getLikesAttribute(): Collection
     {
         return $this->interactionsAsInteractor()->where('type', 'like')->get();

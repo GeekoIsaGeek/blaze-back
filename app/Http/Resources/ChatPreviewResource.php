@@ -17,10 +17,13 @@ class ChatPreviewResource extends JsonResource
         $user = $this->whenLoaded('users', $this->users[0]);
 
         return [
-            'photo' => $user->photos[0]?->url,
+            'photo' => $this->whenNotNull($user->photos[0]?->url),
             'name' => $user?->username,
             'user_id' => $user?->id,
-            'message' => $this->whenLoaded('messages', $this->messages[0]?->message),
+            'message' => $this->whenLoaded('messages', [
+                "text" => $this->messages[0]->message,
+                "sender_id" => $this->messages[0]->sender_id,
+            ]),
             'chat_id' => $this->id
         ];
     }

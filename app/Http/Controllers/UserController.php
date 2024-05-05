@@ -7,6 +7,7 @@ use App\Http\Requests\UpdatePreferencesRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Models\Interest;
 use App\Models\Preference;
+use App\Models\User;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -119,6 +120,18 @@ class UserController extends Controller
             return response()->json([], 204);
         } catch(Exception $error) {
             return response()->json($error, 500);
+        }
+    }
+
+    public function getProfilePic(User $user): JsonResponse
+    {
+        try {
+            if($user->profile_pic) {
+                return response()->json($user->profile_pic, 200);
+            }
+            throw new Exception("No profile pic found");
+        } catch(Exception $error) {
+            return response()->json($error, 404);
         }
     }
 }
