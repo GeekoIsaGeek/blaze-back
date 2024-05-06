@@ -110,7 +110,10 @@ class User extends Authenticatable
 
     public function getMatchesAttribute(): SupportCollection
     {
-        return $this->matchesAsMatchee->merge($this->matchesAsMatcher);
+        $matchesAsMatchee = $this->matchesAsMatchee()->with('matcher')->get()->pluck('matcher');
+        $matchesAsMatcher = $this->matchesAsMatcher()->with('matchee')->get()->pluck('matchee');
+
+        return $matchesAsMatchee->merge($matchesAsMatcher);
     }
 
     public function getNewMatchesAttribute(): SupportCollection
