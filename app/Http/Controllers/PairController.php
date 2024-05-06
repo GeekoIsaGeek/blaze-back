@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\MeetingUserResource;
+use App\Models\Chat;
 use App\Models\Pair;
 use App\Models\User;
 use Error;
@@ -50,6 +51,8 @@ class PairController extends Controller
                 $subQuery->where('matchee_id', $user->id)
                     ->where('matcher_id', auth()->user()->id);
             })->first()->delete();
+
+            Chat::whereSecondParticipantIs($user->id)->delete();
 
             return response()->json([], 200);
         } catch(Error $error) {
