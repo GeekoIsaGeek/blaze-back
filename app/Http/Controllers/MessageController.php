@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Events\MessageProcessedEvent;
 use App\Http\Requests\CreateMessageRequest;
+use App\Http\Resources\MessageResoure;
 use App\Models\Chat;
 use Error;
 use Illuminate\Http\JsonResponse;
@@ -34,12 +35,11 @@ class MessageController extends Controller
                 'message' => $validated['content'],
             ]);
 
-            MessageProcessedEvent::broadcast($message->message, $message->sender_id, $chat->id);
+            MessageProcessedEvent::broadcast(MessageResoure::make($message), $chat->id);
 
             return response()->json(['message' => 'The message has been created'], 201);
         } catch(Error $error) {
             return response()->json(['error' => $error->getMessage()], 500);
         }
-
     }
 }

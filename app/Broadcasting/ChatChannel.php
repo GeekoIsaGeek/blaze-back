@@ -6,19 +6,12 @@ use App\Models\User;
 
 class ChatChannel
 {
-    /**
-     * Create a new channel instance.
-     */
-    public function __construct()
+    public function join(User $user, $chatId): array|bool
     {
-        //
-    }
+        $isChatMember = $user->chats()->where('chat_id', $chatId)->exists();
 
-    /**
-     * Authenticate the user's access to the channel.
-     */
-    public function join(User $user, $id): array|bool
-    {
-        return (int) $user->id === (int) $id;
+        $isAuthorized =  (int) $user->id === (int) auth()->id() && $isChatMember;
+
+        return $isAuthorized;
     }
 }
