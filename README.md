@@ -95,11 +95,13 @@ Now execute in the root of you project following:
 
 which generates auth key.
 
-If you are using public disk to make stored files publicly accessible, run:
+If you are using public disk, run:
 
 ```sh
   php artisan storage:link
 ```
+
+to make stored files publicly accessible.
 
 ##### Now, you should be good to go!
 
